@@ -180,7 +180,7 @@ function cercaPerTurno(){
   const matches=Object.entries(giorno).filter(([ag,v])=>v.cod===cod);
   if(matches.length===0){showError(`Nessun agente con turno <strong>${cod}</strong> il ${formatDate(key)}`);return;}
   const rows=matches.map(([ag,v])=>`<div class="result-row"><div><div class="agent-name">👤 ${ag}</div><div class="desc-text">${v.desc}</div></div><span class="cod-chip">${v.cod}</span></div>`).join('');
-  document.getElementById('results').innerHTML=`<div class="result-list"><div class="result-header"><span class="result-date">📅 ${formatDate(key)}</span><span class="result-count">${matches.length} agente${matches.length>1?'i':''}</span></div>${rows}</div>`;
+  document.getElementById('results').innerHTML=`<div class="result-list"><div class="result-header"><span class="result-date">📅 ${formatDate(key)}</span><span class="result-count">${matches.length} agent${matches.length>1?'i':'e'}</span></div>${rows}</div>`;
 }
 function cercaPerAgente(){
   const dataVal=document.getElementById('input-data-agente').value;

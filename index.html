@@ -113,6 +113,14 @@
   /* Blocco manovra */
   .manovra-block{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 20px;margin-bottom:16px;font-size:13px;color:var(--muted);}
   .manovra-badge{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:6px;background:rgba(107,114,128,.2);color:var(--muted);}
+
+  /* Divisore sezione */
+  .sezione-divider{display:flex;align-items:center;gap:16px;margin:40px 0 20px;}
+  .divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+  .divider-label{font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;padding:0 4px;}
+
+  /* Form full-width per Com'è fatto */
+  .form-row-full{display:flex;flex-direction:column;gap:8px;}
 </style>
 </head>
 <body>
@@ -136,7 +144,6 @@
   <div class="tabs">
     <button class="tab active" onclick="switchTab('turno')" id="tab-turno">🔍 Data + Turno → Agente</button>
     <button class="tab" onclick="switchTab('agente')" id="tab-agente">👤 Data + Agente → Turno</button>
-    <button class="tab" onclick="switchTab('comefatto')" id="tab-comefatto">🚆 Com'è fatto</button>
   </div>
   <div id="panel-turno" class="card">
     <div class="form-row">
@@ -201,11 +208,16 @@
     <div class="result-empty"><span class="icon">📋</span>I risultati appariranno qui</div>
   </div>
 
-  <!-- PANEL COM'È FATTO -->
-  <div id="panel-comefatto" style="display:none">
+  <!-- SEZIONE COM'È FATTO (separata, sempre visibile) -->
+  <div class="sezione-divider">
+    <span class="divider-line"></span>
+    <span class="divider-label">🚆 Com'è fatto</span>
+    <span class="divider-line"></span>
+  </div>
+  <div id="panel-comefatto">
     <div class="card">
-      <div class="form-row">
-        <div class="field" style="grid-column:1/3">
+      <div class="form-row-full">
+        <div class="field">
           <label>Seleziona turno</label>
           <select id="input-comefatto-turno" onchange="mostraComeFatto()">
             <option value="">— Seleziona turno —</option>
@@ -344,11 +356,9 @@ function mostraComeFatto() {
 function switchTab(t){
   document.getElementById('panel-turno').style.display=t==='turno'?'':'none';
   document.getElementById('panel-agente').style.display=t==='agente'?'':'none';
-  document.getElementById('panel-comefatto').style.display=t==='comefatto'?'':'none';
   document.getElementById('tab-turno').className='tab'+(t==='turno'?' active':'');
   document.getElementById('tab-agente').className='tab'+(t==='agente'?' active':'');
-  document.getElementById('tab-comefatto').className='tab'+(t==='comefatto'?' active':'');
-  if(t!=='comefatto') showEmpty();
+  showEmpty();
 }
 function showEmpty(){document.getElementById('results').innerHTML='<div class="result-empty"><span class="icon">📋</span>I risultati appariranno qui</div>';}
 function showError(msg){document.getElementById('results').innerHTML=`<div class="result-error">⚠️ ${msg}</div>`;}

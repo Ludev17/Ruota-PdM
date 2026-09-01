@@ -6,8 +6,8 @@
 <title>Ricerca Turni PdM</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;600;700&display=swap');
-  :root{--bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;--accent:#4f7cff;--accent2:#7c5cfc;--green:#2ecc8c;--red:#ff5c5c;--text:#e8eaf6;--muted:#6b7280;--border:#2d3148;}
-  html.light{--bg:#f4f5f9;--surface:#ffffff;--surface2:#eef0f6;--accent:#4f7cff;--accent2:#7c5cfc;--green:#22a876;--red:#e04b4b;--text:#1a1d27;--muted:#6b7280;--border:#dde1ea;}
+  :root{--bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;--accent:#4f7cff;--accent2:#7c5cfc;--green:#2ecc8c;--red:#ff5c5c;--text:#e8eaf6;--muted:#6b7280;--border:#2d3148;--treno-card-bg:#dfe2e9;--treno-card-border:#c8cbd4;--intermedia-color:#ffffff;}
+  html.light{--bg:#f4f5f9;--surface:#ffffff;--surface2:#eef0f6;--accent:#4f7cff;--accent2:#7c5cfc;--green:#22a876;--red:#e04b4b;--text:#1a1d27;--muted:#6b7280;--border:#dde1ea;--treno-card-bg:#ffffff;--treno-card-border:#e2e4ea;--intermedia-color:#9aa0ad;}
   body,.card,.tab,.login-box,.treno-card,.result-row,.result-single,.dormita-block,.manovra-block{transition:background-color .3s ease, border-color .3s ease, color .3s ease;}
 
   /* Theme toggle switch */
@@ -91,16 +91,17 @@
   @media(max-width:600px){.form-row{grid-template-columns:1fr;}.result-single{flex-direction:column;text-align:center;}.card{padding:20px;}}
 
   /* COM'È FATTO */
-  .treno-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:16px;animation:fadeIn .3s ease;}
-  .treno-card.is-vettura{background:rgba(72,201,176,.12);border-color:rgba(72,201,176,.35);}
-  .treno-card.is-condotta{background:rgba(245,216,74,.10);border-color:rgba(245,216,74,.35);}
+  .treno-card{background:var(--surface);color:var(--text);border:1px solid var(--border);border-left:4px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:16px;animation:fadeIn .3s ease;}
+  .treno-card.is-vettura{border-left-color:#22a876;}
+  .treno-card.is-condotta{border-left-color:#d9a400;}
   .treno-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
   .treno-numero{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--accent);}
   .treno-categoria{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+  .treno-numero-riga{margin-top:6px;}
   .treno-nome{font-size:13px;font-style:italic;color:var(--accent2);margin-top:2px;}
   .treno-badge{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;padding:6px 14px;border-radius:8px;white-space:nowrap;}
-  .treno-badge.vettura{background:rgba(72,201,176,.25);color:#48c9b0;}
-  .treno-badge.condotta{background:rgba(245,216,74,.25);color:#c9a227;}
+  .treno-badge.vettura{background:rgba(34,168,118,.2);color:#2ecc8c;}
+  .treno-badge.condotta{background:rgba(217,164,0,.2);color:#f0c239;}
   .percorso{display:flex;flex-direction:column;gap:0;}
   .fermata{display:flex;align-items:stretch;gap:16px;}
   .fermata-linea{display:flex;flex-direction:column;align-items:center;width:20px;flex-shrink:0;}
@@ -109,14 +110,30 @@
   .fermata-track{width:2px;background:linear-gradient(var(--accent),var(--accent2));flex:1;margin:2px 0;}
   .fermata-content{padding:0 0 18px;flex:1;display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
   .fermata-content.last{padding-bottom:4px;}
-  .fermata-nome{font-size:15px;font-weight:600;color:var(--text);}
+  .fermata-nome{font-size:15px;font-weight:600;color:var(--text);flex-shrink:0;}
   .fermata-nome.capolinea{font-size:16px;color:var(--accent);}
   .fermata-orario{font-family:'DM Mono',monospace;font-size:13px;color:var(--accent);white-space:nowrap;flex-shrink:0;}
-  .fermata-intermedia .fermata-nome{font-size:13px;font-weight:400;color:var(--muted);}
-  .fermata-intermedia .fermata-orario{color:var(--muted);}
-  .fermata-intermedia .fermata-dot{width:8px;height:8px;border-color:var(--border);background:var(--surface2);}
+  .fermata-intermedia .fermata-nome{font-size:13px;font-weight:400;color:var(--intermedia-color);opacity:1;}
+  .fermata-intermedia .fermata-orario{color:var(--intermedia-color);}
+  .fermata-intermedia .fermata-dot{width:8px;height:8px;border-color:var(--intermedia-color);background:var(--intermedia-color);}
   .fermata-intermedia .fermata-content{padding-bottom:10px;}
   .fermata-linea{margin-top:3px;}
+
+  /* Effetto tabellone a palette (split-flap) */
+  .flap-display{display:inline-flex;gap:4px;flex-wrap:wrap;vertical-align:middle;}
+  .flap-char{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:1em;height:1.6em;padding:0 6px;background:linear-gradient(180deg,#2c2c2c 0%,#1c1c1c 50%,#161616 50%,#0a0a0a 100%);border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.04);perspective:240px;}
+  .flap-unit{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
+  .flap-face{display:inline-block;color:#f5f5f5;font-family:'DM Mono','Courier New',monospace;font-weight:700;text-transform:uppercase;transform-origin:center;transition:transform .1s ease-in;}
+  .flap-char.flap-flipping .flap-face{transform:rotateX(70deg) scaleY(.35);}
+  .flap-char::after{content:'';position:absolute;left:2px;right:2px;top:50%;height:1px;background:rgba(0,0,0,.65);z-index:4;pointer-events:none;}
+  .flap-char.flap-space{background:transparent;box-shadow:none;}
+  .flap-char.flap-space .flap-unit{width:0.55em;}
+  .flap-char.flap-space::after{display:none;}
+  .flap-numero{font-size:15px;}
+  .flap-stazione .flap-char{width:0.75em;padding:0 4px;font-size:15px;}
+  .flap-stazione.flap-display{gap:2px;}
+
+
 
   /* Fermate virtuali (tra parentesi quadre nel PDF) */
   .fermata-virtuale .fermata-nome{font-size:12px;font-style:italic;color:var(--muted);opacity:.7;}
@@ -404,6 +421,54 @@ const CATEGORIE_ESTESE = {
   'FR': 'Frecciarossa', 'FA': 'Frecciargento',
 };
 
+function flapify(text, extraClass) {
+  const chars = String(text).split('');
+  const spans = chars.map(c => {
+    if (c === ' ') {
+      return `<span class="flap-char flap-space"><span class="flap-unit"></span></span>`;
+    }
+    const safe = c.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `<span class="flap-char" data-final="${safe}">
+      <span class="flap-unit"><span class="flap-face"></span></span>
+    </span>`;
+  }).join('');
+  return `<span class="flap-display${extraClass ? ' ' + extraClass : ''}">${spans}</span>`;
+}
+
+const FLAP_CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+function animaFlapCarattere(el, ripetizioni, delay) {
+  const finalChar = el.getAttribute('data-final');
+  const face = el.querySelector('.flap-face');
+  if (!finalChar || !face) return;
+
+  function step(remaining) {
+    const isLast = remaining <= 0;
+    const nextChar = isLast ? finalChar : FLAP_CHARSET[Math.floor(Math.random() * FLAP_CHARSET.length)];
+
+    // Il carattere si "schiaccia" ruotando, poi cambia e si distende
+    el.classList.add('flap-flipping');
+    setTimeout(() => {
+      face.textContent = nextChar;
+      el.classList.remove('flap-flipping');
+      if (!isLast) setTimeout(() => step(remaining - 1), 90);
+    }, 90);
+  }
+
+  setTimeout(() => step(ripetizioni), delay);
+}
+
+function animaTabelloni(container) {
+  const displays = container.querySelectorAll('.flap-display');
+  displays.forEach(display => {
+    const caratteri = display.querySelectorAll('.flap-char[data-final]');
+    caratteri.forEach((el, i) => {
+      const ripetizioni = 3 + Math.floor(Math.random() * 3);
+      animaFlapCarattere(el, ripetizioni, i * 45);
+    });
+  });
+}
+
 function renderTrenoCard(treno) {
   const catEstesa = CATEGORIE_ESTESE[treno.categoria] || treno.categoria;
   const nomeHtml = treno.nomeTreno ? `<div class="treno-nome">✦ ${treno.nomeTreno}</div>` : '';
@@ -425,6 +490,7 @@ function renderTrenoCard(treno) {
     const nomeClass = isCapo ? 'fermata-nome capolinea' : 'fermata-nome';
     const contentClass = isLast ? 'fermata-content last' : 'fermata-content';
     const orarioHtml = f.orario ? `<span class="fermata-orario">${f.orario}</span>` : '';
+    const nomeHtmlFermata = isCapo ? flapify(f.nome, 'flap-stazione') : f.nome;
 
     // La tratta è tratteggiata se questa fermata O quella precedente/successiva è virtuale
     const nextIsVirtuale = !isLast && treno.fermate[i+1].tipo === 'virtuale';
@@ -438,7 +504,7 @@ function renderTrenoCard(treno) {
           ${trackHtml}
         </div>
         <div class="${contentClass}">
-          <span class="${nomeClass}">${f.nome}</span>
+          <span class="${nomeClass}">${nomeHtmlFermata}</span>
           ${orarioHtml}
         </div>
       </div>`;
@@ -448,7 +514,8 @@ function renderTrenoCard(treno) {
     <div class="treno-card ${cardClass}">
       <div class="treno-header">
         <div>
-          <div class="treno-categoria">${catEstesa} · ${treno.numero}</div>
+          <div class="treno-categoria">${catEstesa}</div>
+          <div class="treno-numero-riga">${flapify(treno.numero, 'flap-numero')}</div>
           ${nomeHtml}
         </div>
         <span class="treno-badge ${badgeClass}">${badgeLabel}</span>
@@ -488,6 +555,7 @@ function mostraComeFatto() {
   });
 
   el.innerHTML = html;
+  animaTabelloni(el);
 }
 
 function switchTab(t){
